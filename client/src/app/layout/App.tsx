@@ -1,13 +1,17 @@
 import { Container, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import AboutPage from "../../features/about/AboutPage";
 import Catalog from "../../features/catalog/catalog";
 import ProductDetailPage from "../../features/catalog/ProductDetails";
 import ContactPage from "../../features/contact/ContactPage";
 import HomePage from "../../features/home/HomePage";
 import Header from "./Header";
+import "react-toastify/dist/ReactToastify.css";
+import ServerError from "../errors/ServerError";
+import NotFound from "../errors/NotFound";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -23,24 +27,36 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer theme="colored" position="bottom-right" hideProgressBar />
       <CssBaseline></CssBaseline>
       <Header darkMode={darkMode} onDarkModeChange={() => { setDarkMode(!darkMode) }} />
       <Container sx={{ marginTop: 12 }}>
-        <Route path='/' exact>
-          <HomePage />
-        </Route>
-        <Route path='/catalog' exact>
-          <Catalog />
-        </Route>
-        <Route path='/catalog/:id'>
-          <ProductDetailPage />
-        </Route>
-        <Route path='/about' >
-          <AboutPage />
-        </Route>
-        <Route path='/contact'>
-          <ContactPage />
-        </Route>
+        <Switch>
+          <Route path='/' exact>
+            <HomePage />
+          </Route>
+          <Route path='/catalog' exact>
+            <Catalog />
+          </Route>
+          <Route path='/catalog/:id'>
+            <ProductDetailPage />
+          </Route>
+          <Route path='/about' >
+            <AboutPage />
+          </Route>
+          <Route path='/contact'>
+            <ContactPage />
+          </Route>
+          <Route path='/server-error'>
+            <ServerError />
+          </Route>
+          <Route path='/not-found'>
+            <NotFound />
+          </Route>
+          <Route>
+            <NotFound />
+          </Route>
+        </Switch>
       </Container>
     </ThemeProvider>
   );
